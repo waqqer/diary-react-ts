@@ -4,29 +4,35 @@ import { createContext, useEffect, useMemo, useRef, useState } from "react"
 
 const storageKey = "record"
 
-export const StorageContext = createContext({})
+interface StorageValues {
+    data: Sheet[],
+    isLoaded: boolean
+}
+
+export const StorageContext = createContext<StorageValues>({
+    data: [],
+    isLoaded: false
+})
 
 export const StorageProvider = ({ children }: Parent) => {
-    const data = useRef<Sheet[]>([])
+    const [data, setData] = useState<Sheet[]>([])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
     useEffect(() => {
-        if(isLoaded) return
-        
         const loaded: string | null = localStorage.getItem(storageKey)
 
         if(loaded == null) {
-            data.current = []
             setIsLoaded(true)
+            setData([])
             return
         }
 
         try {
             const parsed = JSON.parse(loaded) as Sheet[]
-            data.current = parsed
+            setData(parsed)
         } catch (er: any) {
             localStorage.removeItem(storageKey)
-            data.current = []
+            setData([])
         }
 
         setIsLoaded(true)
@@ -35,7 +41,7 @@ export const StorageProvider = ({ children }: Parent) => {
     const values = useMemo(() => ({
         data,
         isLoaded
-    }), [isLoaded])
+    }), [data, isLoaded])
 
     return (
         <StorageContext.Provider value={values}>

@@ -5,8 +5,8 @@
     --COLOR-MAIN: #0f0f13;
 
     --COLOR-TEXT: white;
-    --COLOR-HEADER-TEXT: white;
-    --COLOR-SUB-HEADER-TEXT: white;
+    --COLOR-HEADER-TEXT: rgb(255, 255, 255);
+    --COLOR-SUB-HEADER-TEXT: rgb(143, 142, 142);
 
     --COLOR-BTN: rgba(129, 129, 129, 0.1);
     --COLOR-BTN-HOVER: rgba(126, 123, 123, 0.2);

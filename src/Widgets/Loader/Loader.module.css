@@ -1,0 +1,61 @@
+.loader {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: var(--COLOR-MAIN);
+
+    z-index: 1000000;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon {
+    background-color: white;
+    height: 60px;
+    width: 60px;
+
+    animation: icon-spin 30s ease infinite, icon-pulse 20s linear infinite;
+    border-radius: 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.inner-icon {
+    height: 55px;
+    width: 55px;
+    background-color: var(--COLOR-MAIN);
+    border-radius: 2.5px;
+}
+
+@keyframes icon-spin {
+    from {
+        transform: rotateZ(0deg);
+    }
+
+    50% {
+        transform: rotateZ(360deg);
+    }
+}
+
+@keyframes icon-pulse {
+    from {
+        opacity: 0;
+    }
+
+    25% {
+        opacity: 0.7;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

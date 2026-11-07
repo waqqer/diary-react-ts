@@ -8,3 +8,5 @@ export interface Record {
     type: "TEXT"
     content: string
 }
+
+export type LoadingState = "LOADING" | "ERROR" | "OK"

@@ -7,12 +7,17 @@
     font-family: var(--FONT);
 }
 
+html {
+    background-color: var(--COLOR-MAIN);
+}
+
 h1 {
     color: var(--COLOR-HEADER-TEXT);
 }
 
 h2, h3 {
     color: var(--COLOR-SUB-HEADER-TEXT);
+    opacity: 0.9;
 }
 
 h4, h5, h6, span, p, a {

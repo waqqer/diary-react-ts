@@ -17,8 +17,8 @@ const Layout = () => {
                 <hr />
 
                 <div className={styles.controlls}>
-                    {controll_buttons.map(v => (
-                        <button onClick={v.onclick}>
+                    {controll_buttons.map((v, i) => (
+                        <button onClick={v.onclick} key={i}>
                             <span>{v.text}</span>
                             <span>{v.sym}</span>
                         </button>
@@ -28,7 +28,7 @@ const Layout = () => {
                 <hr />
                 
                 <div>
-                    
+
                 </div>
             </aside>
 
