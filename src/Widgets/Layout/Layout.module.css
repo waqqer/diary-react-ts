@@ -1,0 +1,48 @@
+.layout {
+    height: 100vh;
+    width: 100vw;
+
+    display: grid;
+    grid-template-columns: 20% 1fr;
+}
+
+.controlls {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    gap: 10px;
+
+    & > button {
+        margin: 0px;
+        display: flex;
+        justify-content: space-between;
+    }
+}
+
+.side {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    gap: 5px;
+
+    background-color: var(--COLOR-ASIDE);
+    height: 100vh;
+    padding: 5%;
+
+    & > h1 {
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+
+    & > * {
+        text-align: center;
+    }
+}
+
+.main {
+    background-color: var(--COLOR-MAIN);
+
+    height: 100vh;
+}

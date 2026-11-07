@@ -1,0 +1,18 @@
+:root {
+    --FONT: "Roboto", sans-serif;
+
+    --COLOR-ASIDE: #1e1e25;
+    --COLOR-MAIN: #0f0f13;
+
+    --COLOR-TEXT: white;
+    --COLOR-HEADER-TEXT: white;
+    --COLOR-SUB-HEADER-TEXT: white;
+
+    --COLOR-BTN: rgba(129, 129, 129, 0.1);
+    --COLOR-BTN-HOVER: rgba(126, 123, 123, 0.2);
+    --COLOR-BTN-ACTIVE: rgba(255, 255, 255, 0.15);
+
+    --COLOR-BTN-TEXT: aliceblue;
+    --COLOR-BTN-HOVER-TEXT: aliceblue;
+    --COLOR-BTN-ACTIVE-TEXT: aliceblue;
+}

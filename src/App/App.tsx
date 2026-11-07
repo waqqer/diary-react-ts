@@ -1,7 +1,13 @@
+import { StorageProvider } from "@/Contexts/StorageContext"
+import Layout from "../Widgets/Layout"
 import "./Styles"
 
 function App() {
-  return <h1>Hello world</h1>
+  return (
+    <StorageProvider>
+      <Layout />
+    </StorageProvider>
+  )
 }
 
 export default App
