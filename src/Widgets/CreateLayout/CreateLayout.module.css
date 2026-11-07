@@ -5,6 +5,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    animation: show 2s ease;
+}
+
+@keyframes show {
+    from {
+        opacity: 0;
+    }
 }
 
 .form {
@@ -86,4 +94,16 @@
 .sub {
     font-weight: normal;
     opacity: 0.8;
+    animation: sub-show 1s ease;
+}
+
+@keyframes sub-show {
+    from {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    50% {
+        opacity: 0;
+    }
 }

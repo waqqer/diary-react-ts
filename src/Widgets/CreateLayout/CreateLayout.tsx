@@ -1,7 +1,12 @@
-import { memo } from "react"
+import { memo, useContext } from "react"
 import styles from "./CreateLayout.module.css"
+import { StorageContext } from "@/Contexts/StorageContext"
 
 const CreateLayout = () => {
+    const {
+        createEmptySheet
+    } = useContext(StorageContext)
+
     return (
         <div className={styles.layout}>
             <div className={styles.form}>
@@ -16,7 +21,7 @@ const CreateLayout = () => {
                     <h3 className={styles.sub}>A Sheet is where your data lives. Create one to begin.</h3>
                 </div>
 
-                <button className={styles.btn}>Get started</button>
+                <button className={styles.btn} onClick={() => createEmptySheet("My first sheet")}>Get started</button>
             </div>
         </div>
     )

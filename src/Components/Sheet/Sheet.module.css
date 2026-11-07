@@ -1,0 +1,52 @@
+.sheet {
+    width: 100%;
+    background-color: var(--COLOR-BTN);
+    opacity: 1;
+    padding: 15px;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 1.1rem;
+    text-transform: capitalize;
+
+    transition: all 0.15s ease;
+    letter-spacing: 0.3px;
+    text-align: start;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &:hover {
+        background-color: var(--COLOR-BTN-HOVER);
+    }
+
+    &:active {
+        background-color: var(--COLOR-BTN-ACTIVE);
+    }
+}
+
+.del {
+    height: 30px;
+    width: 30px;
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+
+        & > svg {
+            color: rgb(250, 69, 69);
+        }
+    }
+
+    &:active {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(0.9);
+    }
+
+    & > svg {
+        color: rgb(255, 128, 128);
+    }
+}

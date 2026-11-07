@@ -1,6 +1,6 @@
 export interface Sheet {
     title: string
-    creationDate: Date
+    id: number
     items: string[]
 }
 

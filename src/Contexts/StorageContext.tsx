@@ -1,17 +1,21 @@
 import type { Parent } from "@/Shared/Types/Component"
 import type { Sheet } from "@/Shared/Types/Record"
-import { createContext, useEffect, useMemo, useRef, useState } from "react"
+import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 
 const storageKey = "record"
 
 interface StorageValues {
     data: Sheet[],
-    isLoaded: boolean
+    isLoaded: boolean,
+    createEmptySheet: (title: string) => void,
+    removeSheetById: (id: number) => void,
 }
 
 export const StorageContext = createContext<StorageValues>({
     data: [],
-    isLoaded: false
+    isLoaded: false,
+    createEmptySheet: (title: string) => title,
+    removeSheetById: (id: number) => id
 })
 
 export const StorageProvider = ({ children }: Parent) => {
@@ -21,7 +25,7 @@ export const StorageProvider = ({ children }: Parent) => {
     useEffect(() => {
         const loaded: string | null = localStorage.getItem(storageKey)
 
-        if(loaded == null) {
+        if (loaded == null) {
             setIsLoaded(true)
             setData([])
             return
@@ -38,10 +42,38 @@ export const StorageProvider = ({ children }: Parent) => {
         setIsLoaded(true)
     }, [])
 
+    useEffect(() => {
+        if(!isLoaded) return
+
+        if (data.length == 0) {
+            localStorage.removeItem(storageKey)
+            return
+        }
+
+        localStorage.setItem(storageKey, JSON.stringify(data))
+    }, [data])
+
+    const createEmptySheet = useCallback((title: string) => {
+        setData(prev => [
+            ...prev,
+            {
+                title: title,
+                id: Date.now(),
+                items: []
+            }
+        ])
+    }, [])
+
+    const removeSheetById = useCallback((id: number) => {
+        setData(prev => prev.filter(v => v.id !== id))
+    }, [])
+
     const values = useMemo(() => ({
         data,
-        isLoaded
-    }), [data, isLoaded])
+        isLoaded,
+        createEmptySheet,
+        removeSheetById
+    }), [data, isLoaded, createEmptySheet])
 
     return (
         <StorageContext.Provider value={values}>
