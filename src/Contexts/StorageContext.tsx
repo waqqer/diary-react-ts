@@ -7,15 +7,17 @@ const storageKey = "record"
 interface StorageValues {
     data: Sheet[],
     isLoaded: boolean,
-    createEmptySheet: (title: string) => void,
+    createEmptySheet: (title: string) => number,
     removeSheetById: (id: number) => void,
+    renameSheetById: (id: number, name: string) => void
 }
 
 export const StorageContext = createContext<StorageValues>({
     data: [],
     isLoaded: false,
-    createEmptySheet: (title: string) => title,
-    removeSheetById: (id: number) => id
+    createEmptySheet: (title: string) => title.length,
+    removeSheetById: (id: number) => id,
+    renameSheetById: (id: number, name: string) => id + name
 })
 
 export const StorageProvider = ({ children }: Parent) => {
@@ -43,7 +45,7 @@ export const StorageProvider = ({ children }: Parent) => {
     }, [])
 
     useEffect(() => {
-        if(!isLoaded) return
+        if (!isLoaded) return
 
         if (data.length == 0) {
             localStorage.removeItem(storageKey)
@@ -53,27 +55,36 @@ export const StorageProvider = ({ children }: Parent) => {
         localStorage.setItem(storageKey, JSON.stringify(data))
     }, [data])
 
-    const createEmptySheet = useCallback((title: string) => {
+    const createEmptySheet = useCallback((title: string): number => {
+        const id = Date.now()
         setData(prev => [
             ...prev,
             {
                 title: title,
-                id: Date.now(),
+                id,
                 items: []
             }
         ])
+        return id
     }, [])
 
     const removeSheetById = useCallback((id: number) => {
         setData(prev => prev.filter(v => v.id !== id))
     }, [])
 
+    const renameSheetById = useCallback((id: number, name: string) => {
+        setData(prev => {
+            return prev.map(v => v.id === id ? { ...v, title: name } : v)
+        })
+    }, [])
+
     const values = useMemo(() => ({
         data,
         isLoaded,
         createEmptySheet,
-        removeSheetById
-    }), [data, isLoaded, createEmptySheet])
+        removeSheetById,
+        renameSheetById
+    }), [data, isLoaded, createEmptySheet, renameSheetById])
 
     return (
         <StorageContext.Provider value={values}>

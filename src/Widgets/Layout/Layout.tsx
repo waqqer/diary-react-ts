@@ -2,6 +2,7 @@ import { memo, useContext } from "react"
 import styles from "./Layout.module.css"
 import { StorageContext } from "@/Contexts/StorageContext"
 import Sheet from "@/Components/Sheet"
+import RecordViewer from "../RecordViewer"
 
 const Layout = () => {
     const { data, createEmptySheet } = useContext(StorageContext)
@@ -27,9 +28,7 @@ const Layout = () => {
                 </div>
             </aside>
 
-            <main className={styles.main}>
-
-            </main>
+            <RecordViewer className={styles.main} />
         </div>
     )
 }

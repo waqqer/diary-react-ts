@@ -1,0 +1,80 @@
+.view {
+    display: grid;
+    grid-template-rows: 10vh 90vh;
+}
+
+.info {
+    background-color: var(--COLOR-ASIDE);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+
+    display: grid;
+    grid-template-columns: 90% auto;
+}
+
+.meta {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: center;
+    gap: 5px;
+
+    overflow: hidden;
+    
+    & > * {
+        width: 100%;
+    }
+}
+
+.title {
+    font-size: 1.75rem;
+    background-color: transparent;
+    border: none;
+    color: var(--COLOR-HEADER-TEXT);
+    font-weight: bold;
+
+    &:focus {
+        border: none;
+        outline: none;
+    }
+}
+
+.id {
+    font-weight: 400;
+    font-size: 0.8rem;
+    opacity: 0.6;
+}
+
+.fields {
+
+}
+
+.del {
+    padding: 5px;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    background-color: rgb(218, 44, 44);
+    font-weight: bold;
+    gap: 5px;
+
+    &:hover {
+        background-color: rgb(252, 147, 147);
+    }
+
+    &:active {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(0.9);
+    }
+
+    & > svg {
+        color: white;
+        height: 20px;
+    }
+}
