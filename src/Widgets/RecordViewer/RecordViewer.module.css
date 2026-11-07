@@ -47,7 +47,7 @@
 }
 
 .fields {
-
+    display: flex;
 }
 
 .del {
@@ -60,7 +60,8 @@
     justify-content: center;
     cursor: pointer;
 
-    background-color: rgb(218, 44, 44);
+    background-color: transparent;
+    border: 2px solid rgb(252, 147, 147);
     font-weight: bold;
     gap: 5px;
 
@@ -76,5 +77,47 @@
     & > svg {
         color: white;
         height: 20px;
+    }
+}
+
+.empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    & > .modal {
+        background-color: var(--COLOR-ASIDE);
+        min-height: 200px;
+        min-width: 400px;
+        padding: 20px;
+        border-radius: 5px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+
+        position: relative;
+
+        & > h1 {
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 10px;
+        }
+
+        & > h4 {
+            opacity: 0.5;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        & > svg {
+            position: absolute;
+            fill: gray;
+            opacity: 0.05;
+            transform: scale(0.9);
+        }
     }
 }

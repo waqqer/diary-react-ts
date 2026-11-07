@@ -16,6 +16,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
+    overflow: hidden;
 
     &:hover {
         background-color: var(--COLOR-BTN-HOVER);
@@ -23,6 +25,14 @@
 
     &:active {
         background-color: var(--COLOR-BTN-ACTIVE);
+    }
+
+    & > svg {
+        position: absolute;
+        fill: gray;
+        opacity: 0.05;
+        transform: scale(0.5);
+        left: 25%;
     }
 }
 

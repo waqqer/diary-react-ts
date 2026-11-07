@@ -1,8 +1,8 @@
 :root {
-    --FONT: "Roboto", sans-serif;
+    --FONT: "Roboto Mono", sans-serif;
 
-    --COLOR-ASIDE: #1e1e25;
-    --COLOR-MAIN: #0f0f13;
+    --COLOR-ASIDE: #050508;
+    --COLOR-MAIN: #0e0e0f;
 
     --COLOR-TEXT: white;
     --COLOR-HEADER-TEXT: rgb(255, 255, 255);
