@@ -5,6 +5,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    position: relative;
+    overflow: hidden;
 
     animation: show 2s ease;
 }
@@ -29,6 +31,7 @@
     flex-direction: column;
     align-items: stretch;
     justify-content: space-evenly;
+    z-index: 10;
 
     &>button {
         margin: 0;

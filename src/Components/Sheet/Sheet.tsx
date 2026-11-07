@@ -2,7 +2,6 @@ import { memo, useContext } from "react"
 import type { Classable } from "@/Shared/Types/Component"
 import type { Record, Sheet } from "@/Shared/Types/Record"
 import styles from "./Sheet.module.css"
-import { StorageContext } from "@/Contexts/StorageContext"
 import { SheetContext } from "@/Contexts/SheetContext"
 
 interface RecordProps extends Classable {

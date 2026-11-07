@@ -11,6 +11,15 @@
 
     display: grid;
     grid-template-columns: 90% auto;
+
+    animation: show-info 0.1s ease;
+}
+
+@keyframes show-info {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
 }
 
 .meta {

@@ -26,6 +26,15 @@
     & > * {
         text-align: center;
     }
+
+    animation: show-side 3s ease;
+}
+
+@keyframes show-side {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
 }
 
 .list {
@@ -80,6 +89,12 @@
 }
 
 .main {
-    background-color: var(--COLOR-MAIN);
     height: 100vh;
+    animation: show-main 3s ease;
+}
+
+@keyframes show-main {
+    from {
+        opacity: 0;
+    }
 }
