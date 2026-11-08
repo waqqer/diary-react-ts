@@ -8,6 +8,7 @@ interface SheetContextValues {
     changeSheet: (sheet: Sheet) => void
     changeSheetById: (id: number) => void
     deleteSheetById: (id: number) => void
+    changeSheetToNull: () => void
 }
 
 export const SheetContext = createContext<SheetContextValues>({
@@ -15,6 +16,7 @@ export const SheetContext = createContext<SheetContextValues>({
     changeSheet: (sheet: Sheet) => sheet,
     changeSheetById: (id: number) => id,
     deleteSheetById: (id: number) => id,
+    changeSheetToNull: () => null
 })
 
 export const SheetProvider = ({ children }: Parent) => {
@@ -24,7 +26,11 @@ export const SheetProvider = ({ children }: Parent) => {
 
     const changeSheet = useCallback((sheet: Sheet) => {
         setSheet(sheet)
-    }, [])
+    }, [setSheet])
+
+    const changeSheetToNull = useCallback(() => {
+        setSheet(null)
+    }, [setSheet])
 
     const changeSheetById = useCallback((id: number) => {
         if(data.length === 0) return
@@ -33,19 +39,20 @@ export const SheetProvider = ({ children }: Parent) => {
         if(sh !== undefined) {
             setSheet(sh)
         }
-    }, [data])
+    }, [data, setSheet])
 
     const deleteSheetById = useCallback((id: number) => {
         removeSheetById(id)
         setSheet(null)
-    }, [removeSheetById])
+    }, [removeSheetById, setSheet])
 
     const values = useMemo(() => ({
         sheet,
         changeSheet,
         deleteSheetById,
-        changeSheetById
-    }), [sheet, changeSheet, deleteSheetById, changeSheetById])
+        changeSheetById,
+        changeSheetToNull
+    }), [sheet, changeSheet, deleteSheetById, changeSheetById, changeSheetToNull])
 
     return (
         <SheetContext.Provider value={values}>

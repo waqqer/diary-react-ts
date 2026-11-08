@@ -50,6 +50,7 @@
 
     scrollbar-width: none;
     -ms-overflow-style: none;
+    position: relative;
 
     &::-webkit-scrollbar {
         display: none;

@@ -12,6 +12,7 @@
     transition: all 0.15s ease;
     letter-spacing: 0.3px;
     text-align: start;
+    min-height: 70px;
 
     display: flex;
     justify-content: space-between;

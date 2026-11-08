@@ -30,22 +30,35 @@
     gap: 5px;
 
     overflow: hidden;
-    
-    & > * {
+
+    &>* {
         width: 100%;
     }
 }
 
 .title {
-    font-size: 1.75rem;
-    background-color: transparent;
-    border: none;
-    color: var(--COLOR-HEADER-TEXT);
-    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    gap: 10px;
 
-    &:focus {
+    &>input {
+        font-size: 1.75rem;
+        background-color: transparent;
         border: none;
-        outline: none;
+        color: var(--COLOR-HEADER-TEXT);
+        font-weight: bold;
+
+        &:focus {
+            border: none;
+            outline: none;
+        }
+    }
+
+    & > svg {
+        height: 20px;
+        color: var(--COLOR-HEADER-TEXT);
+        opacity: 0.5;
     }
 }
 
@@ -83,7 +96,7 @@
         transform: scale(0.9);
     }
 
-    & > svg {
+    &>svg {
         color: white;
         height: 20px;
     }
@@ -95,7 +108,7 @@
     align-items: center;
     justify-content: center;
 
-    & > .modal {
+    &>.modal {
         background-color: var(--COLOR-ASIDE);
         min-height: 200px;
         min-width: 400px;
@@ -110,19 +123,19 @@
 
         position: relative;
 
-        & > h1 {
+        &>h1 {
             letter-spacing: 2px;
             text-transform: uppercase;
             padding: 10px;
         }
 
-        & > h4 {
+        &>h4 {
             opacity: 0.5;
             letter-spacing: 1px;
             text-transform: uppercase;
         }
 
-        & > svg {
+        &>svg {
             position: absolute;
             fill: gray;
             opacity: 0.05;

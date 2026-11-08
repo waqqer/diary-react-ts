@@ -59,6 +59,7 @@ hr {
     opacity: 0.2;
     border-radius: 5px;
     margin-block: 5px;
+    max-height: 2px;
 }
 
 #root {
