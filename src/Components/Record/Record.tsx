@@ -1,9 +1,10 @@
-import type { LinkContent, Record as RecordData } from "@/Shared/Types/Record"
+import type { ChecklistItem, LinkContent, Record as RecordData } from "@/Shared/Types/Record"
 import { memo } from "react"
 import styles from "./Record.module.css"
 
 interface RecordProps {
     record: RecordData
+    onChange?: (content: ChecklistItem[]) => void
 }
 
 const safeHref = (url: string) => {
@@ -13,7 +14,7 @@ const safeHref = (url: string) => {
     return `https://${trimmed}`
 }
 
-const RecordView = ({ record }: RecordProps) => {
+const RecordView = ({ record, onChange }: RecordProps) => {
     switch (record.type) {
         case "TEXT":
             return <p className={styles.text}>{record.content}</p>
@@ -32,24 +33,42 @@ const RecordView = ({ record }: RecordProps) => {
             if (!content?.url) return null
             return <a className={styles.link} href={safeHref(content.url)} target="_blank" rel="noreferrer">{content.label || content.url}</a>
         }
+        case "CHECKLIST":
+            return Array.isArray(record.content) ? (
+                <ul className={styles.checklist}>
+                    {(record.content as ChecklistItem[]).map((item, index) => (
+                        <li className={item.checked ? styles.checked : ""} key={index}>
+                            <input
+                                type="checkbox"
+                                checked={item.checked}
+                                aria-label={`Mark ${item.text} ${item.checked ? "incomplete" : "complete"}`}
+                                onChange={() => onChange?.(record.content.map((task: ChecklistItem, taskIndex: number) => taskIndex === index ? { ...task, checked: !task.checked } : task))}
+                            />
+                            <span>{item.text}</span>
+                        </li>
+                    ))}
+                </ul>
+            ) : null
         default:
             return null
     }
 }
 
-const Record = ({ record }: RecordProps) => {
+const Record = ({ record, onChange }: RecordProps) => {
     const label = record.type === "LIST"
         ? "List"
         : record.type === "PARAGRAPH"
             ? "Paragraph"
             : record.type === "LINK"
                 ? "Link"
+                : record.type === "CHECKLIST"
+                    ? "Checklist"
                 : null
 
     return (
         <div className={`${styles.record} ${label ? styles.labeled : ""}`}>
             {label && <div className={styles.typeLabel}>{label}</div>}
-            <RecordView record={record} />
+            <RecordView record={record} onChange={onChange} />
         </div>
     )
 }

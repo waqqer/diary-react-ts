@@ -91,7 +91,7 @@ const RecordsField = (props: RecordsFieldProps) => {
     }
 
     const beginDrag = (event: PointerEvent<HTMLDivElement>, record: RecordData) => {
-        if (event.button !== 0 || !current) return
+        if (event.button !== 0 || !current || (event.target as HTMLElement).closest("input, button, a, textarea")) return
         event.preventDefault()
         const order = [...current.items]
         dragOrderRef.current = order
@@ -105,7 +105,7 @@ const RecordsField = (props: RecordsFieldProps) => {
 
     return (
         <div className={`${styles.field} ${className}`} onPointerMove={moveRecord} onPointerUp={endDrag} onPointerCancel={endDrag}>
-            {records.map(record => (
+            {records.map((record, index) => (
                 <div
                     className={`${styles.draggable} ${draggedRecord === record ? styles.dragging : ""}`}
                     key={getRecordKey(record)}
@@ -116,7 +116,16 @@ const RecordsField = (props: RecordsFieldProps) => {
                     }}
                     onPointerDown={event => beginDrag(event, record)}
                 >
-                    <Record record={record} />
+                    <Record
+                        record={record}
+                        onChange={content => {
+                            if (!current) return
+                            editSheetById(current.id, sheet => ({
+                                ...sheet,
+                                items: sheet.items.map((item, itemIndex) => itemIndex === index ? { ...item, content } : item)
+                            }))
+                        }}
+                    />
                 </div>
             ))}
             <AddRecord />

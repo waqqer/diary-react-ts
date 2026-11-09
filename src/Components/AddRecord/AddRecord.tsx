@@ -1,6 +1,6 @@
 import { memo, useCallback, useContext, useEffect, useState, type FormEvent } from "react"
 import styles from "./AddRecord.module.css"
-import type { LinkContent, RecordType } from "@/Shared/Types/Record"
+import type { ChecklistItem, LinkContent, RecordType } from "@/Shared/Types/Record"
 import { StorageContext } from "@/Contexts/StorageContext"
 
 type AddRecordState = "TEXT" | "CHOOSE" | "ENTER"
@@ -12,9 +12,10 @@ const recordTypes: { type: RecordType; label: string }[] = [
     { type: "PARAGRAPH", label: "Paragraph" },
     { type: "LIST", label: "List" },
     { type: "LINK", label: "Link" },
+    { type: "CHECKLIST", label: "Checklist" },
 ]
 
-type RecordContent = string | string[] | LinkContent
+type RecordContent = string | string[] | LinkContent | ChecklistItem[]
 
 const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: RecordContent) => void; onCancel: () => void }) => {
     const { type, onSubmit, onCancel } = props
@@ -29,6 +30,8 @@ const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: RecordC
             ? { url: url.trim(), label: label.trim() }
             : type === "LIST"
             ? items.map(item => item.trim()).filter(Boolean)
+            : type === "CHECKLIST"
+                ? items.map(item => item.trim()).filter(Boolean).map(text => ({ text, checked: false }))
             : content.trim()
 
         if (type === "LINK" && !url.trim()) return
@@ -64,15 +67,15 @@ const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: RecordC
                     value={content}
                     onChange={event => setContent(event.target.value)}
                 />
-            ) : type === "LIST" ? (
+            ) : type === "LIST" || type === "CHECKLIST" ? (
                 <div className={styles.listItems}>
                     {items.map((item, index) => (
                         <div className={styles.listItem} key={index}>
                             <span className={styles.bullet} aria-hidden="true">•</span>
                             <input
                                 autoFocus={index === 0}
-                                aria-label={`List item ${index + 1}`}
-                                placeholder={`List item ${index + 1}`}
+                                aria-label={`${type === "CHECKLIST" ? "Checklist task" : "List item"} ${index + 1}`}
+                                placeholder={`${type === "CHECKLIST" ? "Task" : "List item"} ${index + 1}`}
                                 value={item}
                                 onChange={event => setItems(current => current.map((value, i) => i === index ? event.target.value : value))}
                             />

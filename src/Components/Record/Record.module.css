@@ -75,6 +75,46 @@
     color: var(--COLOR-SUB-HEADER-TEXT);
 }
 
+.checklist {
+    display: grid;
+    gap: 8px;
+    list-style: none;
+}
+
+.checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    color: rgba(255, 255, 255, 0.86);
+    line-height: 1.55;
+    transition: color 0.16s ease;
+}
+
+.checklist li > input {
+    flex: 0 0 auto;
+    width: 17px;
+    height: 17px;
+    margin: 0;
+    accent-color: #4caf70;
+    cursor: pointer;
+}
+
+.checklist li > span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.checklist li.checked,
+.checklist li.checked > span {
+    color: #79d99a;
+}
+
+.checklist li.checked > span {
+    text-decoration: line-through;
+    text-decoration-color: rgba(121, 217, 154, 0.6);
+}
+
 .separator {
     height: 1px;
     max-height: none;
