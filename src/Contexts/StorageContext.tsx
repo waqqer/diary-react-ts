@@ -94,7 +94,7 @@ export const StorageProvider = ({ children }: Parent) => {
     }, [setData])
 
     const appendRecord = useCallback((record: Record) => {
-        if(!current)
+        if(current === null)
             return
 
         editSheetById(current.id, (v) => ({

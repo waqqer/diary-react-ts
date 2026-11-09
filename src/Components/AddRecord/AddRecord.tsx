@@ -1,4 +1,4 @@
-import { memo, useCallback, useContext, useState, type FormEvent } from "react"
+import { memo, useCallback, useContext, useEffect, useState, type FormEvent } from "react"
 import styles from "./AddRecord.module.css"
 import type { RecordType } from "@/Shared/Types/Record"
 import { StorageContext } from "@/Contexts/StorageContext"
@@ -16,12 +16,12 @@ const recordTypes: { type: RecordType; label: string }[] = [
 const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: string | string[]) => void; onCancel: () => void }) => {
     const { type, onSubmit, onCancel } = props
     const [content, setContent] = useState("")
-    const isMultiline = type === "PARAGRAPH" || type === "LIST"
+    const [items, setItems] = useState([""])
 
     const submit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const value = type === "LIST"
-            ? content.split("\n").map(item => item.trim()).filter(Boolean)
+            ? items.map(item => item.trim()).filter(Boolean)
             : content.trim()
 
         if ((Array.isArray(value) && value.length === 0) || value === "") return
@@ -30,14 +30,35 @@ const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: string 
 
     return (
         <form className={styles.input} onSubmit={submit} onClick={event => event.stopPropagation()}>
-            {isMultiline ? (
+            {type === "PARAGRAPH" ? (
                 <textarea
                     autoFocus
-                    aria-label={type === "LIST" ? "List items, one per line" : "Paragraph text"}
-                    placeholder={type === "LIST" ? "One item per line" : "Enter paragraph"}
+                    aria-label="Paragraph text"
+                    placeholder="Enter paragraph"
                     value={content}
                     onChange={event => setContent(event.target.value)}
                 />
+            ) : type === "LIST" ? (
+                <div className={styles.listItems}>
+                    {items.map((item, index) => (
+                        <div className={styles.listItem} key={index}>
+                            <span className={styles.bullet} aria-hidden="true">•</span>
+                            <input
+                                autoFocus={index === 0}
+                                aria-label={`List item ${index + 1}`}
+                                placeholder={`List item ${index + 1}`}
+                                value={item}
+                                onChange={event => setItems(current => current.map((value, i) => i === index ? event.target.value : value))}
+                            />
+                            {items.length > 1 && (
+                                <button className={styles.removeItem} type="button" aria-label={`Remove item ${index + 1}`} onClick={() => setItems(current => current.filter((_, i) => i !== index))}>×</button>
+                            )}
+                        </div>
+                    ))}
+                    <button className={styles.addItem} type="button" onClick={() => setItems(current => [...current, ""])}>
+                        + Add item
+                    </button>
+                </div>
             ) : (
                 <input
                     autoFocus
@@ -58,9 +79,13 @@ const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: string 
 const AddRecord = () => {
     const [state, setState] = useState<AddRecordState>("TEXT")
     const [chosen, setChosen] = useState<RecordType>("TEXT")
-    const { appendRecord } = useContext(StorageContext)
+    const { current, appendRecord } = useContext(StorageContext)
 
     const reset = useCallback(() => setState("TEXT"), [])
+
+    useEffect(() => {
+        reset()
+    }, [current?.id, reset])
 
     const chooseType = (type: RecordType) => {
         setChosen(type)
@@ -80,7 +105,7 @@ const AddRecord = () => {
     return (
         <div className={styles.add} onClick={() => {
             if (state === "TEXT") setState("CHOOSE")
-        }} onMouseLeave={reset}>
+        }}>
             {state === "TEXT" && <span className={styles.text}>New record</span>}
 
             {state === "CHOOSE" && (

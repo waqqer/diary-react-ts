@@ -1,91 +1,206 @@
 .add {
-    margin: 0;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 3px dotted black;
-    cursor: pointer;
+    --add-border: rgba(255, 255, 255, 0.15);
+    width: 100%;
+    min-height: 64px;
+    padding: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    transition: background-color 1s ease;
-    min-height: 50px;
+    border: 1px dashed var(--add-border);
+    border-radius: 5px;
+    background: rgba(0, 0, 0, 0.32);
+    color: var(--COLOR-TEXT);
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.add:has(.text) {
+    cursor: pointer;
+}
+
+.add:has(.text):hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.48);
 }
 
 .text {
+    color: var(--COLOR-SUB-HEADER-TEXT);
+    font-size: 0.95rem;
     font-weight: 500;
-    font-size: 1.25rem;
-    letter-spacing: 1.1px;
-    animation: show 1s ease both;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s ease;
+}
+
+.add:has(.text):hover .text {
+    color: var(--COLOR-TEXT);
 }
 
 .controls {
-    height: 100%;
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    animation: show 1s ease both;
+    gap: 8px;
+    animation: show 0.2s ease both;
+}
+
+.controls > button,
+.actions > button {
+    min-height: 40px;
+    margin: 0;
+    padding: 9px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 4px;
+    background: var(--COLOR-BTN);
+    color: var(--COLOR-BTN-TEXT);
+    font-family: var(--FONT);
+    font-size: 0.85rem;
+    transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
 .controls > button {
-    flex: 1;
-    margin: 0;
-    border-radius: 1px;
-    &:hover {
-        transform: none;
-    }
+    flex: 1 1 110px;
 }
 
-@keyframes show {
-    from {
-        opacity: 0;
-        transform: translateY(-15px) scale(0.97);
-    }
+.controls > button:hover,
+.actions > button:hover {
+    transform: translateY(-1px);
+    border-color: rgba(255, 255, 255, 0.18);
+    background: var(--COLOR-BTN-HOVER);
+    color: var(--COLOR-BTN-HOVER-TEXT);
+}
 
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+.controls > button:active,
+.actions > button:active {
+    transform: translateY(0);
+    background: var(--COLOR-BTN-ACTIVE);
 }
 
 .input {
+    width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    height: 100%;
-    width: 100%;
+    align-items: stretch;
     gap: 10px;
+    animation: show 0.2s ease both;
 }
 
 .input > input,
 .input > textarea {
-    box-sizing: border-box;
     width: 100%;
     min-width: 0;
+    padding: 12px 13px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    outline: none;
+    background: rgba(0, 0, 0, 0.48);
+    color: var(--COLOR-TEXT);
+    font-family: var(--FONT);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.input > input::placeholder,
+.input > textarea::placeholder {
+    color: var(--COLOR-SUB-HEADER-TEXT);
+    opacity: 0.75;
+}
+
+.input > input:focus,
+.input > textarea:focus {
+    border-color: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.68);
 }
 
 .input > textarea {
-    min-height: 90px;
+    min-height: 110px;
     resize: vertical;
+}
+
+.listItems {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.listItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.listItem > input {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    outline: none;
+    background: rgba(0, 0, 0, 0.55);
+    color: var(--COLOR-TEXT);
+    font-family: var(--FONT);
+    font-size: 0.9rem;
+}
+
+.listItem > input:focus {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.bullet {
+    width: 14px;
+    color: var(--COLOR-SUB-HEADER-TEXT);
+    text-align: center;
+}
+
+.removeItem,
+.addItem {
+    margin: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.4);
+    color: var(--COLOR-SUB-HEADER-TEXT);
+    font-family: var(--FONT);
+    cursor: pointer;
+}
+
+.removeItem {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    font-size: 1.2rem;
+}
+
+.addItem {
+    align-self: flex-start;
+    padding: 8px 11px;
+    font-size: 0.8rem;
+}
+
+.removeItem:hover,
+.addItem:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--COLOR-TEXT);
 }
 
 .actions {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     gap: 8px;
 }
 
-@media (max-width: 600px) {
-    .controls {
-        flex-wrap: wrap;
-    }
+.actions > button[type="submit"] {
+    background: rgba(255, 255, 255, 0.14);
+}
 
-    .controls > button {
-        flex: 1 1 28%;
-    }
+@keyframes show {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 480px) {
+    .add { padding: 10px; }
+    .controls { justify-content: stretch; }
+    .controls > button { flex-basis: 90px; }
 }
