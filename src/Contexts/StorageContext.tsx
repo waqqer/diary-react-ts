@@ -1,5 +1,5 @@
 import type { Parent } from "@/Shared/Types/Component"
-import type { Sheet } from "@/Shared/Types/Record"
+import type { Record, Sheet } from "@/Shared/Types/Record"
 import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 
 const storageKey = "record"
@@ -12,7 +12,8 @@ interface StorageValues {
     removeSheetById: (id: number) => void
     editSheetById: (id: number, change: (v: Sheet) => Sheet) => void
     getSheetById: (id: number) => Sheet | undefined,
-    setSheetById: (id: number) => Sheet | undefined
+    setSheetById: (id: number) => Sheet | undefined,
+    appendRecord: (record: Record) => void,
 }
 
 export const StorageContext = createContext<StorageValues>({
@@ -23,7 +24,8 @@ export const StorageContext = createContext<StorageValues>({
     removeSheetById: () => undefined,
     editSheetById: () => undefined,
     getSheetById: () => undefined,
-    setSheetById: () => undefined
+    setSheetById: () => undefined,
+    appendRecord: () => undefined
 })
 
 export const StorageProvider = ({ children }: Parent) => {
@@ -79,6 +81,9 @@ export const StorageProvider = ({ children }: Parent) => {
     }, [setData])
 
     const removeSheetById = useCallback((id: number) => {
+        if(current && current.id === id) {
+            setCurrent(null)
+        }
         setData(prev => prev.filter(v => v.id !== id))
     }, [setData])
 
@@ -88,6 +93,16 @@ export const StorageProvider = ({ children }: Parent) => {
         })
     }, [setData])
 
+    const appendRecord = useCallback((record: Record) => {
+        if(!current)
+            return
+
+        editSheetById(current.id, (v) => ({
+            ...v,
+            items: [...v.items, record]
+        }))
+    }, [current, editSheetById])
+
     const values = useMemo(() => ({
         current,
         data,
@@ -96,8 +111,9 @@ export const StorageProvider = ({ children }: Parent) => {
         removeSheetById,
         editSheetById,
         getSheetById,
-        setSheetById
-    }), [current, data, isLoaded, createSheet, editSheetById, removeSheetById, getSheetById, setSheetById])
+        setSheetById,
+        appendRecord
+    }), [current, data, isLoaded, createSheet, editSheetById, removeSheetById, getSheetById, setSheetById, appendRecord])
 
     return (
         <StorageContext.Provider value={values}>

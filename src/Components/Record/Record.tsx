@@ -1,7 +1,8 @@
+import type { Record } from "@/Shared/Types/Record"
 import { memo } from "react"
 
 interface RecordProps {
-    record: string
+    record: Record
 }
 
 const Record = (props: RecordProps) => {
@@ -11,7 +12,7 @@ const Record = (props: RecordProps) => {
 
     return (
         <div>
-            <h1>{record}</h1>
+            <h1>{record.type}</h1>
         </div>
     )
 }

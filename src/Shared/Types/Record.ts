@@ -1,12 +1,14 @@
 export interface Sheet {
     title: string
     id: number
-    items: string[]
+    items: Record[]
 }
 
 export interface Record {
-    type: "TEXT"
-    content: string
+    type: RecordType
+    content: any
 }
+
+export type RecordType = "TEXT" | "SEPARATOR" | "HEADER" | "PARAGRAPH" | "LIST"
 
 export type LoadingState = "LOADING" | "ERROR" | "OK"

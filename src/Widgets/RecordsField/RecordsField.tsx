@@ -3,6 +3,7 @@ import { memo, useContext } from "react"
 import styles from "./RecordsField.module.css"
 import Record from "@/Components/Record"
 import { StorageContext } from "@/Contexts/StorageContext"
+import AddRecord from "@/Components/AddRecord"
 
 interface RecordsFieldProps extends Classable {
 
@@ -19,10 +20,7 @@ const RecordsField = (props: RecordsFieldProps) => {
         <div className={`${styles.field} ${className}`}>
             {current?.items.map((v,i) => <Record record={v} key={i}/>)}
             
-            <button className={styles.add} onClick={() => {
-            }}>
-                Create new record
-            </button>
+            <AddRecord />
         </div>
     )
 }

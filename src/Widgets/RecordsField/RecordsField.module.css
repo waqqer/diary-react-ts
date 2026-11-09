@@ -1,20 +1,3 @@
-.add {
-    margin: 0;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 3px dotted black;
-    cursor: pointer;
-
-    &:hover {
-        transform: translateY(2px);
-        background-color: transparent;
-    }
-
-    &:active {
-        transform: none;
-        background-color: transparent;
-    }
-}
-
 .field {
     display: flex;
     flex-direction: column;
