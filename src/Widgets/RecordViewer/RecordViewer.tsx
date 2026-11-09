@@ -3,6 +3,7 @@ import { memo, useContext, useEffect, useState } from "react"
 import styles from "./RecordViewer.module.css"
 import { SheetContext } from "@/Contexts/SheetContext"
 import { StorageContext } from "@/Contexts/StorageContext"
+import RecordsField from "../RecordsField"
 
 interface RecordViewerProps extends Classable {
 
@@ -80,9 +81,7 @@ const RecordViewer = (props: RecordViewerProps) => {
                 </span>
             </div>
 
-            <div className={styles.fields}>
-
-            </div>
+            <RecordsField className={styles.fields} />
         </div>
     )
 }
