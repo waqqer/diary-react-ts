@@ -5,26 +5,29 @@ import { createContext, useCallback, useEffect, useMemo, useState } from "react"
 const storageKey = "record"
 
 interface StorageValues {
+    current: Sheet | null,
     data: Sheet[],
     isLoaded: boolean,
-    createEmptySheet: (title: string) => number
+    createSheet: (sheet: Sheet) => Sheet
     removeSheetById: (id: number) => void
-    renameSheetById: (id: number, name: string) => void
-    appendRecordToSheet: (id: number, record: string) => Sheet | undefined
-    getSheetById: (id: number) => Sheet | undefined
+    editSheetById: (id: number, change: (v: Sheet) => Sheet) => void
+    getSheetById: (id: number) => Sheet | undefined,
+    setSheetById: (id: number) => Sheet | undefined
 }
 
 export const StorageContext = createContext<StorageValues>({
+    current: null,
     data: [],
     isLoaded: false,
-    createEmptySheet: (title: string) => title.length,
-    removeSheetById: (id: number) => id,
-    renameSheetById: (id: number, name: string) => id + name,
-    appendRecordToSheet: () => undefined,
-    getSheetById: () => undefined
+    createSheet: (sheet: Sheet) => sheet,
+    removeSheetById: () => undefined,
+    editSheetById: () => undefined,
+    getSheetById: () => undefined,
+    setSheetById: () => undefined
 })
 
 export const StorageProvider = ({ children }: Parent) => {
+    const [current, setCurrent] = useState<Sheet | null>(null)
     const [data, setData] = useState<Sheet[]>([])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
 
@@ -63,46 +66,38 @@ export const StorageProvider = ({ children }: Parent) => {
         return data.find(v => v.id === id)
     }, [data])
 
-    const createEmptySheet = useCallback((title: string): number => {
-        const id = Date.now()
-        setData(prev => [
-            ...prev,
-            {
-                title: title,
-                id,
-                items: ["hello"]
-            }
-        ])
-        return id
+    const setSheetById = useCallback((id: number): Sheet | undefined => {
+        const sh = getSheetById(id)
+        if (sh)
+            setCurrent(sh)
+        return sh
+    }, [getSheetById, setCurrent])
+
+    const createSheet = useCallback((sheet: Sheet): Sheet => {
+        setData(prev => [...prev, sheet])
+        return sheet
     }, [setData])
-
-    const appendRecordToSheet = useCallback((id: number, record: string): Sheet | undefined => {
-        setData(prev => {
-            return prev.map(v => v.id === id ? { ...v, items: [...v.items, record] } : v)
-        })
-
-        return getSheetById(id)
-    }, [setData, getSheetById])
 
     const removeSheetById = useCallback((id: number) => {
         setData(prev => prev.filter(v => v.id !== id))
     }, [setData])
 
-    const renameSheetById = useCallback((id: number, name: string) => {
+    const editSheetById = useCallback((id: number, change: (v: Sheet) => Sheet) => {
         setData(prev => {
-            return prev.map(v => v.id === id ? { ...v, title: name } : v)
+            return prev.map(v => v.id === id ? change(v) : v)
         })
     }, [setData])
 
     const values = useMemo(() => ({
+        current,
         data,
         isLoaded,
-        createEmptySheet,
+        createSheet,
         removeSheetById,
-        renameSheetById,
-        appendRecordToSheet,
-        getSheetById
-    }), [data, isLoaded, createEmptySheet, renameSheetById, removeSheetById, appendRecordToSheet, getSheetById])
+        editSheetById,
+        getSheetById,
+        setSheetById
+    }), [current, data, isLoaded, createSheet, editSheetById, removeSheetById, getSheetById, setSheetById])
 
     return (
         <StorageContext.Provider value={values}>

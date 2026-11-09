@@ -1,8 +1,8 @@
 import type { Classable } from "@/Shared/Types/Component"
 import { memo, useContext } from "react"
 import styles from "./RecordsField.module.css"
-import { SheetContext } from "@/Contexts/SheetContext"
 import Record from "@/Components/Record"
+import { StorageContext } from "@/Contexts/StorageContext"
 
 interface RecordsFieldProps extends Classable {
 
@@ -13,15 +13,13 @@ const RecordsField = (props: RecordsFieldProps) => {
         className = ""
     } = props
 
-    const { sheet, appendRecord, reloadSheet } = useContext(SheetContext)
+    const { current } = useContext(StorageContext)
 
     return (
         <div className={`${styles.field} ${className}`}>
-            {sheet?.items.map((v,i) => <Record record={v} key={i}/>)}
+            {current?.items.map((v,i) => <Record record={v} key={i}/>)}
             
             <button className={styles.add} onClick={() => {
-                appendRecord("Hello")
-                reloadSheet()
             }}>
                 Create new record
             </button>

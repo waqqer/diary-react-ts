@@ -1,11 +1,9 @@
 import { memo, useContext } from "react"
 import styles from "./CreateLayout.module.css"
 import { StorageContext } from "@/Contexts/StorageContext"
-import { SheetContext } from "@/Contexts/SheetContext"
 
 const CreateLayout = () => {
-    const { createEmptySheet } = useContext(StorageContext)
-    const { changeSheetById } = useContext(SheetContext)
+    const { createSheet, setSheetById } = useContext(StorageContext)
 
     return (
         <div className={styles.layout}>
@@ -22,7 +20,11 @@ const CreateLayout = () => {
                 </div>
 
                 <button className={styles.btn} onClick={() => {
-                    changeSheetById(createEmptySheet("My first sheet"))
+                    setSheetById(createSheet({
+                        title: "My first sheet",
+                        id: Date.now(),
+                        items: []
+                    }).id)
                 }}>Get started</button>
             </div>
         </div>
