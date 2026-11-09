@@ -118,6 +118,13 @@ const RecordsField = (props: RecordsFieldProps) => {
                 >
                     <Record
                         record={record}
+                        onDelete={() => {
+                            if (!current) return
+                            editSheetById(current.id, sheet => ({
+                                ...sheet,
+                                items: sheet.items.filter((_, itemIndex) => itemIndex !== index)
+                            }))
+                        }}
                         onChange={content => {
                             if (!current) return
                             editSheetById(current.id, sheet => ({

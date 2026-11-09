@@ -5,6 +5,7 @@ import styles from "./Record.module.css"
 interface RecordProps {
     record: RecordData
     onChange?: (content: ChecklistItem[]) => void
+    onDelete?: () => void
 }
 
 const safeHref = (url: string) => {
@@ -54,7 +55,7 @@ const RecordView = ({ record, onChange }: RecordProps) => {
     }
 }
 
-const Record = ({ record, onChange }: RecordProps) => {
+const Record = ({ record, onChange, onDelete }: RecordProps) => {
     const label = record.type === "LIST"
         ? "List"
         : record.type === "PARAGRAPH"
@@ -67,6 +68,18 @@ const Record = ({ record, onChange }: RecordProps) => {
 
     return (
         <div className={`${styles.record} ${label ? styles.labeled : ""}`}>
+            <button
+                className={styles.removeRecord}
+                type="button"
+                aria-label={`Delete ${record.type.toLowerCase()} record`}
+                title="Delete record"
+                onClick={event => {
+                    event.stopPropagation()
+                    onDelete?.()
+                }}
+            >
+                ×
+            </button>
             {label && <div className={styles.typeLabel}>{label}</div>}
             <RecordView record={record} onChange={onChange} />
         </div>

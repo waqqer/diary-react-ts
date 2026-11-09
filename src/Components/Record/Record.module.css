@@ -1,4 +1,5 @@
 .record {
+    position: relative;
     width: 100%;
     padding: 16px 18px;
     border: 1px solid rgba(255, 255, 255, 0.07);
@@ -7,6 +8,40 @@
     color: var(--COLOR-TEXT);
     overflow-wrap: anywhere;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+}
+
+.removeRecord {
+    position: absolute;
+    z-index: 2;
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    background: rgba(10, 10, 12, 0.88);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.15rem;
+    line-height: 1;
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+
+.record:hover .removeRecord,
+.record:focus-within .removeRecord {
+    opacity: 1;
+}
+
+.removeRecord:hover {
+    background: rgba(160, 45, 45, 0.75);
+    color: white;
+}
+
+@media (max-width: 900px) {
+    .removeRecord { opacity: 1; }
 }
 
 .record:has(.separator) {
