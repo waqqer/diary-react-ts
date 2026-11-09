@@ -91,7 +91,8 @@ export const StorageProvider = ({ children }: Parent) => {
         setData(prev => {
             return prev.map(v => v.id === id ? change(v) : v)
         })
-    }, [setData])
+        setCurrent(prev => prev?.id === id ? change(prev) : prev)
+    }, [])
 
     const appendRecord = useCallback((record: Record) => {
         if(current === null)
@@ -101,6 +102,7 @@ export const StorageProvider = ({ children }: Parent) => {
             ...v,
             items: [...v.items, record]
         }))
+
     }, [current, editSheetById])
 
     const values = useMemo(() => ({
