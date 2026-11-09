@@ -1,6 +1,6 @@
 import { memo, useCallback, useContext, useEffect, useState, type FormEvent } from "react"
 import styles from "./AddRecord.module.css"
-import type { RecordType } from "@/Shared/Types/Record"
+import type { LinkContent, RecordType } from "@/Shared/Types/Record"
 import { StorageContext } from "@/Contexts/StorageContext"
 
 type AddRecordState = "TEXT" | "CHOOSE" | "ENTER"
@@ -11,26 +11,52 @@ const recordTypes: { type: RecordType; label: string }[] = [
     { type: "HEADER", label: "Header" },
     { type: "PARAGRAPH", label: "Paragraph" },
     { type: "LIST", label: "List" },
+    { type: "LINK", label: "Link" },
 ]
 
-const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: string | string[]) => void; onCancel: () => void }) => {
+type RecordContent = string | string[] | LinkContent
+
+const RecordEnter = memo((props: { type: RecordType; onSubmit: (content: RecordContent) => void; onCancel: () => void }) => {
     const { type, onSubmit, onCancel } = props
     const [content, setContent] = useState("")
     const [items, setItems] = useState([""])
+    const [url, setUrl] = useState("")
+    const [label, setLabel] = useState("")
 
     const submit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        const value = type === "LIST"
+        const value = type === "LINK"
+            ? { url: url.trim(), label: label.trim() }
+            : type === "LIST"
             ? items.map(item => item.trim()).filter(Boolean)
             : content.trim()
 
+        if (type === "LINK" && !url.trim()) return
         if ((Array.isArray(value) && value.length === 0) || value === "") return
         onSubmit(value)
     }
 
     return (
         <form className={styles.input} onSubmit={submit} onClick={event => event.stopPropagation()}>
-            {type === "PARAGRAPH" ? (
+            {type === "LINK" ? (
+                <div className={styles.linkFields}>
+                    <input
+                        autoFocus
+                        type="url"
+                        required
+                        aria-label="Link URL"
+                        placeholder="https://example.com"
+                        value={url}
+                        onChange={event => setUrl(event.target.value)}
+                    />
+                    <input
+                        aria-label="Link text (optional)"
+                        placeholder="Link text (optional)"
+                        value={label}
+                        onChange={event => setLabel(event.target.value)}
+                    />
+                </div>
+            ) : type === "PARAGRAPH" ? (
                 <textarea
                     autoFocus
                     aria-label="Paragraph text"
@@ -97,7 +123,7 @@ const AddRecord = () => {
         setState("ENTER")
     }
 
-    const addRecord = (content: string | string[]) => {
+    const addRecord = (content: RecordContent) => {
         appendRecord({ type: chosen, content })
         reset()
     }

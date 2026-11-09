@@ -1,9 +1,10 @@
 .layout {
     height: 100vh;
-    width: 100vw;
+    width: 100%;
+    min-width: 0;
 
     display: grid;
-    grid-template-columns: 20% 1fr;
+    grid-template-columns: minmax(0, 20%) minmax(0, 1fr);
 }
 
 .side {
@@ -90,6 +91,7 @@
 }
 
 .main {
+    min-width: 0;
     height: 100vh;
     animation: show-main 3s ease;
 }

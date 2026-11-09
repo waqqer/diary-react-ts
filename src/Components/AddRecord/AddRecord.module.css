@@ -1,6 +1,8 @@
 .add {
     --add-border: rgba(255, 255, 255, 0.15);
-    width: 100%;
+    width: auto;
+    min-width: 0;
+    flex: 0 0 auto;
     min-height: 64px;
     padding: 14px;
     display: flex;
@@ -11,6 +13,7 @@
     background: rgba(0, 0, 0, 0.32);
     color: var(--COLOR-TEXT);
     transition: background-color 0.2s ease, border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 .add:has(.text) {
@@ -78,7 +81,12 @@
 }
 
 .input {
-    width: 100%;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    flex: 1 1 0;
+    align-self: stretch;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -87,7 +95,9 @@
 }
 
 .input > input,
-.input > textarea {
+.input > textarea,
+.linkFields > input {
+    box-sizing: border-box;
     width: 100%;
     min-width: 0;
     padding: 12px 13px;
@@ -103,15 +113,23 @@
 }
 
 .input > input::placeholder,
-.input > textarea::placeholder {
+.input > textarea::placeholder,
+.linkFields > input::placeholder {
     color: var(--COLOR-SUB-HEADER-TEXT);
     opacity: 0.75;
 }
 
 .input > input:focus,
-.input > textarea:focus {
+.input > textarea:focus,
+.linkFields > input:focus {
     border-color: rgba(255, 255, 255, 0.35);
     background: rgba(0, 0, 0, 0.68);
+}
+
+.linkFields {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .input > textarea {
@@ -132,6 +150,7 @@
 }
 
 .listItem > input {
+    box-sizing: border-box;
     flex: 1;
     min-width: 0;
     padding: 10px 12px;
@@ -186,8 +205,13 @@
 
 .actions {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    align-items: center;
     gap: 8px;
+
+    & > button {
+        flex: 1;
+    }
 }
 
 .actions > button[type="submit"] {

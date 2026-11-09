@@ -25,6 +25,9 @@ const RecordViewer = (props: RecordViewerProps) => {
         if (current === null)
             return
 
+        if (current.title === name)
+            return
+
         if (name.trim().length === 0) {
             editSheetById(current.id, (s) => ({
                 ...s,

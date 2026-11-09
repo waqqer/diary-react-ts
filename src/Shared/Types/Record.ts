@@ -9,6 +9,11 @@ export interface Record {
     content: any
 }
 
-export type RecordType = "TEXT" | "SEPARATOR" | "HEADER" | "PARAGRAPH" | "LIST"
+export type RecordType = "TEXT" | "SEPARATOR" | "HEADER" | "PARAGRAPH" | "LIST" | "LINK"
+
+export interface LinkContent {
+    url: string
+    label: string
+}
 
 export type LoadingState = "LOADING" | "ERROR" | "OK"
