@@ -1,5 +1,6 @@
 .layout {
     height: 100vh;
+    height: 100dvh;
     width: 100vw;
 
     display: flex;
@@ -36,6 +37,17 @@
     &>button {
         margin: 0;
     }
+}
+
+@media (max-width: 700px) {
+    .form {
+        width: min(92vw, 520px);
+        min-width: 0;
+        padding: clamp(18px, 6vw, 30px);
+    }
+
+    .head { flex-wrap: wrap; gap: 6px; font-size: clamp(1.4rem, 8vw, 2.2rem); }
+    .sub { font-size: 0.9rem; }
 }
 
 .info {

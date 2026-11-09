@@ -6,18 +6,23 @@ import { StorageContext } from "@/Contexts/StorageContext"
 
 interface RecordProps extends Classable {
     sheet: Sheet
+    onSelect?: () => void
 }
 
 const Record = (props: RecordProps) => {
     const {
         sheet,
-        className = ""
+        className = "",
+        onSelect
     } = props
 
     const { setSheetById, removeSheetById } = useContext(StorageContext)
 
     return (
-        <div className={`${styles.sheet} ${className}`} onClick={() => setSheetById(sheet.id)}>
+        <div className={`${styles.sheet} ${className}`} onClick={() => {
+            setSheetById(sheet.id)
+            onSelect?.()
+        }}>
             <span>{sheet.title}</span>
             <span className={styles.del} onClick={event => {
                 event.stopPropagation()

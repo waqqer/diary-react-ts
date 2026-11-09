@@ -112,6 +112,15 @@
     transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
+.input > textarea {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
 .input > input::placeholder,
 .input > textarea::placeholder,
 .linkFields > input::placeholder {
