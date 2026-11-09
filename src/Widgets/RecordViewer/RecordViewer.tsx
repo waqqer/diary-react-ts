@@ -1,5 +1,5 @@
 import type { Classable } from "@/Shared/Types/Component"
-import { memo, useContext, useEffect, useState } from "react"
+import { memo, useContext, useEffect, useRef, useState } from "react"
 import styles from "./RecordViewer.module.css"
 import { StorageContext } from "@/Contexts/StorageContext"
 import RecordsField from "../RecordsField"
@@ -14,34 +14,14 @@ const RecordViewer = (props: RecordViewerProps) => {
     } = props
 
     const { editSheetById, current, removeSheetById } = useContext(StorageContext)
-
-    const [name, setName] = useState<string>(current?.title ?? "")
-
-    useEffect(() => {
-        setName(current?.title ?? "")
-    }, [current, setName])
+    const [titleDraft, setTitleDraft] = useState(current?.title ?? "")
+    const originalTitle = useRef(current?.title ?? "")
 
     useEffect(() => {
-        if (current === null)
-            return
-
-        if (current.title === name)
-            return
-
-        if (name.trim().length === 0) {
-            editSheetById(current.id, (s) => ({
-                ...s,
-                title: current.title
-            }))
-            return
-        }
-
-        editSheetById(current.id, (s) => ({
-            ...s,
-            title: name
-        }))
-    }, [name, editSheetById, current])
-
+        const title = current?.title ?? ""
+        setTitleDraft(title)
+        originalTitle.current = title
+    }, [current?.id])
 
     if (current === null) {
         return (
@@ -71,8 +51,23 @@ const RecordViewer = (props: RecordViewerProps) => {
                             name="rename"
                             type="text"
                             placeholder="Rename sheet"
-                            value={name}
-                            onChange={(ev) => setName(ev.target.value)}
+                            value={titleDraft}
+                            onFocus={() => { originalTitle.current = current.title }}
+                            onChange={ev => {
+                                const title = ev.target.value
+                                setTitleDraft(title)
+                                const visibleTitle = title.trim() ? title : originalTitle.current
+                                editSheetById(current.id, sheet => sheet.title === visibleTitle
+                                    ? sheet
+                                    : { ...sheet, title: visibleTitle })
+                            }}
+                            onBlur={ev => {
+                                const typedTitle = ev.currentTarget.value
+                                const title = typedTitle.trim() ? typedTitle : originalTitle.current
+                                setTitleDraft(title)
+                                editSheetById(current.id, sheet => ({ ...sheet, title }))
+                                originalTitle.current = title
+                            }}
                         />
                     </div>
 

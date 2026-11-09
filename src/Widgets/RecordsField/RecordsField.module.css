@@ -14,3 +14,17 @@
         display: none;
     }
 }
+
+.draggable {
+    min-width: 0;
+    cursor: grab;
+    touch-action: pan-y;
+    transition: transform 120ms ease, opacity 120ms ease;
+    user-select: none;
+}
+
+.draggable:active { cursor: grabbing; }
+
+.dragging {
+    opacity: 0.4;
+}

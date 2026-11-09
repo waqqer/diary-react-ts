@@ -29,9 +29,10 @@ export const StorageContext = createContext<StorageValues>({
 })
 
 export const StorageProvider = ({ children }: Parent) => {
-    const [current, setCurrent] = useState<Sheet | null>(null)
+    const [currentId, setCurrentId] = useState<number | null>(null)
     const [data, setData] = useState<Sheet[]>([])
     const [isLoaded, setIsLoaded] = useState<boolean>(false)
+    const current = data.find(sheet => sheet.id === currentId) ?? null
 
     useEffect(() => {
         const loaded: string | null = localStorage.getItem(storageKey)
@@ -71,27 +72,27 @@ export const StorageProvider = ({ children }: Parent) => {
     const setSheetById = useCallback((id: number): Sheet | undefined => {
         const sh = getSheetById(id)
         if (sh)
-            setCurrent(sh)
+            setCurrentId(id)
         return sh
-    }, [getSheetById, setCurrent])
+    }, [getSheetById])
 
     const createSheet = useCallback((sheet: Sheet): Sheet => {
         setData(prev => [...prev, sheet])
+        setCurrentId(sheet.id)
         return sheet
-    }, [setData])
+    }, [])
 
     const removeSheetById = useCallback((id: number) => {
         if(current && current.id === id) {
-            setCurrent(null)
+            setCurrentId(null)
         }
         setData(prev => prev.filter(v => v.id !== id))
-    }, [setData])
+    }, [current])
 
     const editSheetById = useCallback((id: number, change: (v: Sheet) => Sheet) => {
         setData(prev => {
             return prev.map(v => v.id === id ? change(v) : v)
         })
-        setCurrent(prev => prev?.id === id ? change(prev) : prev)
     }, [])
 
     const appendRecord = useCallback((record: Record) => {
